@@ -20,9 +20,21 @@ window.onload = function(){
   document.addEventListener("keydown", function(e) {
 	if (e.keyCode==VK_RED) {
 		document.location.href = 'http://www.google.com/';
+    hbbtvlib_synchronization();
 	};
 	e.preventDefault();
   },false);
+
+  document.addEventListener("keydown", function(e) {
+	if (e.keyCode==VK_0) {
+		var app = document.getElementById("oipfAppMan").getOwnerApplication(document);
+    app.destroyApplication();
+
+	};
+	e.preventDefault();
+  },false);
+
+
 };
 //]]>
 </script>

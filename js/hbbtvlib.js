@@ -33,14 +33,9 @@ function redButton(){
           });
     });
   });
-  /*
-  setTimeout(function(){
-    $('#buttonContainer').hide().delay(10000).fadeIn(5000);
-  });*/
+};
 
-
-
-
-
+function hbbtvlib_synchronization(){
+  
 
 }
