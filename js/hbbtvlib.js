@@ -36,6 +36,11 @@ function redButton(){
 };
 
 function hbbtvlib_synchronization(){
-  
+  $('#divGraphic').innerHTML = "<div id='firstContainer' style='left:50px; top:500px; position:absolute; background:#FFFFFE; width:300px; height: 100px;'>"+
+  +"<p>Press Sync number </p> <br> <p>Press Sync number </p>"+
+  +"</div>"+
+  +"<div id='secondContainer' style='left:50px; top:500px; position:absolute; background:#FFFFFE; width:300px; height: 100px;'>"+
+  +"<p>Press Sync number </p> <br> <p>Press Sync number </p>"+
+  +"</div>";
 
 }
