@@ -7,11 +7,40 @@
 function hbbtvlib_red_initialize(){
   //should be called show() function, if not the application will not be shown;
   var appManager = document.getElementById("oipfAppMan").getOwnerApplication(document);
-  
+
   appManager.show();
 
+  redButton();
 
   // IMPORTANT!!: only RED button should be accepted.
   appManager.privateData.keyset.setValue(0x1);
 
 };
+
+function redButton(){
+  //buttonContainer
+
+  setTimeout(function(){
+    $('#buttonContainer').show().delay(10000).fadeOut( function(){
+          $('#buttonContainer').hide().delay(5000).fadeIn( function(){
+              $('#buttonContainer').show().delay(5000).fadeOut( function(){
+                $('#buttonContainer').hide().delay(60000).fadeIn( function(){
+                  $('#buttonContainer').show().delay(5000).fadeOut( function(){
+                    $('#buttonContainer').hide();
+                  });
+                });
+              });
+          });
+    });
+  });
+  /*
+  setTimeout(function(){
+    $('#buttonContainer').hide().delay(10000).fadeIn(5000);
+  });*/
+
+
+
+
+
+
+}
