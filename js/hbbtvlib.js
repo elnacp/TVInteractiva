@@ -20,7 +20,6 @@ function hbbtvlib_red_initialize(){
 function redButton(){
   //buttonContainer
 
-
   $('#segonPanell').hide();
   setTimeout(function(){
     $('#buttonContainer').show().delay(10000).fadeOut( function(){
@@ -44,11 +43,6 @@ function hbbtvlib_synchronization(){
     //$('#buttonContainer').hide();
     $('#segonPanell').show();
 
-
-
-
-
-
-
+    
 
 }
