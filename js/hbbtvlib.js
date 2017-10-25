@@ -42,7 +42,33 @@ function hbbtvlib_synchronization(){
     button.style.display = "none";
     //$('#buttonContainer').hide();
     $('#segonPanell').show();
+    var num = generarNumero();
+    document.getElementById('numeroRandom').innerHTML = num;
+    console.log(num);
 
-    
+};
 
-}
+function generarNumero(){
+    var numero;
+    var numero="";
+    var cifra=[];
+    for(a=0;a<4;a++){
+        cifra[a]=parseInt(Math.random()*10);
+        if(a==0){	//quita esto si el número puede empezar por cero
+            cifra[a]=parseInt(Math.random()*9)+1;//quita esto si el número puede empezar por cero
+        }//quita esto si el número puede empezar por cero
+        for(aa=0;aa<a;aa++){
+            if(cifra[a]==cifra[aa]){a-=1;break}
+
+        }
+    }
+    for(a=0;a<4;a++){
+        numero+=cifra[a];
+    }
+    numero=parseInt(numero);//quita esto para que pueda empezar por cero.
+
+    //document.write(numero);
+    return numero;
+
+
+};
