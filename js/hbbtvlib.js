@@ -37,13 +37,7 @@ function redButton(){
 
 function hbbtvlib_synchronization(){
 
-  console.log(document.getElementById("divGraphic"));
-  console.log("HELLO");
-  document.getElementById("divGraphic").innerHTML = "<div id='firstContainer' style='left:50px; top:500px; position:absolute; background:#FFFFFE; width:300px; height: 100px;'>"+
-  +"<p>Press Sync number </p> <br> <p>Press Sync number </p>"+
-  +"</div>"+
-  +"<div id='secondContainer' style='left:50px; top:500px; position:absolute; background:#FFFFFE; width:300px; height: 100px;'>"+
-  +"<p>Press <img height='50px' width='100px' src='./img/070645-glossy-black-3d-button-icon-alphanumeric-word-ok1-sc493.png'/> to continue </p>"+
-  +"</div>";
+    var button = document.getElementById('divGraphic');
+    button.style.display = "none";
 
 }
