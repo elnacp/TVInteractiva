@@ -16,27 +16,30 @@
 //<![CDATA[
 window.onload = function(){
   hbbtvlib_red_initialize();
-
+  var pg = 0;
   document.addEventListener("keydown", function(e) {
 	if (e.keyCode=='69') {   //VK_RED
-
-        hbbtvlib_synchronization();
+        if( pg == 0){
+            hbbtvlib_synchronization();
+            pg = 1;
+        }
 	};
 	e.preventDefault();
   },false);
 
   document.addEventListener("keydown", function(e) {
-        if (e.keyCode=='69') {   //VK_RED
-
-            hbbtvlib_synchronization();
-        };
-        e.preventDefault();
+      if (e.keyCode==VK_RED) {   //VK_RED
+          if(pg == 1){
+              hbbtvlib_catalog();
+          }
+      };
+      e.preventDefault();
   },false);
 
   document.addEventListener("keydown", function(e) {
 	if (e.keyCode==VK_0) {
 		var app = document.getElementById("oipfAppMan").getOwnerApplication(document);
-    app.destroyApplication();
+        app.destroyApplication();
 
 	};
 	e.preventDefault();
@@ -55,12 +58,28 @@ The main page should have application manager, and should call show() at onload(
 -->
 <object id="oipfAppMan" type="application/oipfApplicationManager"></object>
 
+
 <!-- the logical HbbTV Application graphic plane is 1280px horizontally by 720px vertically
 So the every content should be draw in 1280 * 720 -->
 <div style="left: 0px; top: 0px; width: 1280px; height: 720px;  position:absolute; border:1px solid #c33;  z-index:-1;"></div>
 
 <!-- Graphic safe area(Recommend), 1024 * 648 -->
 
+
+<!--<object id="video" type="video/broadcast"></object>-->
+
+
+<!-- PRIMER PANEL-->
+<div id="divGraphic" style="left: 128px; top: 36px; width: 1024px; height: 648px; position:absolute; z-index:1;">
+
+  <div id="buttonContainer" style="left:50px; top:500px; position:absolute; background:#FFFFFE; width:300px; height: 100px;">
+    <p>Press <img height="50px" width="100px" src="./img/buttons_PNG63.png"/> to start application </p>
+  </div>
+
+</div>
+
+
+<!-- SEGON PANEL-->
 <div id="segonPanell" style="background-color: #ff0000; left: 128px; top: 36px; width: 900px; height: 200px; position:center; z-index:1; " >
   <p style="color: white; font-size: 30px;"> Sync number </p>
   <p style="color: white" id="numeroRandom">  </p>
@@ -72,14 +91,18 @@ So the every content should be draw in 1280 * 720 -->
 
 
 
+<!-- TERCER PANEL-->
+<div id="tercerPanell">
+  <div id="scrollPanel">
 
-<div id="divGraphic" style="left: 128px; top: 36px; width: 1024px; height: 648px; position:absolute; z-index:1;">
-
-  <div id="buttonContainer" style="left:50px; top:500px; position:absolute; background:#FFFFFE; width:300px; height: 100px;">
-    <p>Press <img height="50px" width="100px" src="./img/buttons_PNG63.png"/> to start application </p>
   </div>
+  <object id="video" type="video/broadcast"></object>
+
 
 </div>
+
+
+
 
 
 <script type="text/javascript" src="./js/hbbtvlib.js"></script>

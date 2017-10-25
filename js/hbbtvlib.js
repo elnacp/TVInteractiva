@@ -74,3 +74,16 @@ function hbbtvlib_synchronization(){
 
 };
 
+
+function hbbtvlib_catalog(){
+
+    $('#segonPanell').hide();
+    $('#okContainer').hide();
+    $('#buttonContainer').hide();
+
+
+
+
+
+}
+
