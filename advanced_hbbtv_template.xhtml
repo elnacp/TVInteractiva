@@ -26,6 +26,14 @@ window.onload = function(){
   },false);
 
   document.addEventListener("keydown", function(e) {
+        if (e.keyCode=='69') {   //VK_RED
+
+            hbbtvlib_synchronization();
+        };
+        e.preventDefault();
+  },false);
+
+  document.addEventListener("keydown", function(e) {
 	if (e.keyCode==VK_0) {
 		var app = document.getElementById("oipfAppMan").getOwnerApplication(document);
     app.destroyApplication();
@@ -56,6 +64,10 @@ So the every content should be draw in 1280 * 720 -->
 <div id="segonPanell" style="background-color: #ff0000; left: 128px; top: 36px; width: 900px; height: 200px; position:center; z-index:1; " >
   <p style="color: white; font-size: 30px;"> Sync number </p>
   <p style="color: white" id="numeroRandom">  </p>
+</div>
+
+<div id="okContainer" style="left:50px; top:500px; position:absolute; background-color: #ff0000; width:300px; height: 100px;">
+  <p>Press <img height="50px" width="100px" src=""/> to continue </p>
 </div>
 
 

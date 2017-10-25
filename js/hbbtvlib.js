@@ -21,6 +21,8 @@ function redButton(){
   //buttonContainer
 
   $('#segonPanell').hide();
+  $('#okContainer').hide();
+
   setTimeout(function(){
     $('#buttonContainer').show().delay(10000).fadeOut( function(){
           $('#buttonContainer').hide().delay(5000).fadeIn( function(){
@@ -34,18 +36,6 @@ function redButton(){
           });
     });
   });
-};
-
-function hbbtvlib_synchronization(){
-
-    var button = document.getElementById('divGraphic');
-    button.style.display = "none";
-    //$('#buttonContainer').hide();
-    $('#segonPanell').show();
-    var num = generarNumero();
-    document.getElementById('numeroRandom').innerHTML = num;
-    console.log(num);
-
 };
 
 function generarNumero(){
@@ -69,6 +59,18 @@ function generarNumero(){
 
     //document.write(numero);
     return numero;
+};
 
+
+function hbbtvlib_synchronization(){
+
+    var button = document.getElementById('divGraphic');
+    button.style.display = "none";
+    $('#segonPanell').show();
+    $('#okContainer').show();
+    var num = generarNumero();
+    document.getElementById('numeroRandom').innerHTML = num;
+    //console.log(num);
 
 };
+
