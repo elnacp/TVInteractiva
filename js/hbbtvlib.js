@@ -12,6 +12,7 @@ function hbbtvlib_red_initialize(){
 
   redButton();
 
+
   // IMPORTANT!!: only RED button should be accepted.
   appManager.privateData.keyset.setValue(0x1);
 
@@ -81,9 +82,13 @@ function hbbtvlib_catalog(){
     $('#okContainer').hide();
     $('#buttonContainer').hide();
 
+};
 
 
-
-
-}
+function llegir_json() {
+    console.log("HELLO");
+    $.getJSON('dades.json', function (data) {
+        console.log('hola');
+    });
+};
 
