@@ -24,6 +24,7 @@ function redButton(){
 
   $('#segonPanell').hide();
   $('#okContainer').hide();
+  $('#catalog').hide();
 
   setTimeout(function(){
     $('#buttonContainer').show().delay(10000).fadeOut( function(){
@@ -66,6 +67,7 @@ function generarNumero(){
 
 function hbbtvlib_synchronization(){
 
+    $('#catalog').hide();
     var button = document.getElementById('divGraphic');
     button.style.display = "none";
     $('#segonPanell').show();
@@ -82,6 +84,7 @@ function hbbtvlib_catalog(){
     $('#segonPanell').hide();
     $('#okContainer').hide();
     $('#buttonContainer').hide();
+    $('#catalog').show();
 
 };
 
