@@ -17,7 +17,7 @@
 //<![CDATA[
 window.onload = function(){
   hbbtvlib_red_initialize();
-  llegir_json();
+
   var pg = 0;
   document.addEventListener("keydown", function(e) {
 	if (e.keyCode=='69') {   //VK_RED
@@ -30,7 +30,7 @@ window.onload = function(){
   },false);
 
   document.addEventListener("keydown", function(e) {
-      if (e.keyCode==VK_RED) {   //VK_RED
+      if (e.keyCode=='70') {   //VK_RED
           if(pg == 1){
               hbbtvlib_catalog();
           }

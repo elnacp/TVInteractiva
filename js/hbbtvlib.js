@@ -11,6 +11,7 @@ function hbbtvlib_red_initialize(){
   appManager.show();
 
   redButton();
+  llegir_json();
 
 
   // IMPORTANT!!: only RED button should be accepted.
@@ -86,9 +87,24 @@ function hbbtvlib_catalog(){
 
 
 function llegir_json() {
-    console.log("HELLO");
-    $.getJSON('dades.json', function (data) {
-        console.log('hola');
-    });
+    console.log("hELLO");
+    var fileName = "dades.json";
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange= function() {
+        console.log("DINTRE");
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            console.log("DINTRE2");
+            didResponse(xmlhttp.responseText);
+        }
+    }
+    xmlhttp.overrideMimeType("application/json");
+    xmlhttp.open("GET", "/data/"+fileName, true);
+    xmlhttp.send();
 };
+
+function didResponse(response) {
+    console.log("HELLO2");
+    jsonArray = JSON.parse(response);
+    console.log(jsonArray);
+}
 
