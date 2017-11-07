@@ -11,7 +11,7 @@ function hbbtvlib_red_initialize(){
   appManager.show();
 
   redButton();
-  llegir_json();
+
 
 
   // IMPORTANT!!: only RED button should be accepted.
@@ -86,18 +86,57 @@ function hbbtvlib_catalog(){
     $('#buttonContainer').hide();
     $('#catalog').show();
 
+    llegir_json();
+    llegir_usuaris();
+
+
 };
 
 
 function llegir_json() {
-    console.log("hELLO");
+
+
     var fileName = "dades.json";
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange= function() {
-        console.log("DINTRE");
+
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            console.log("DINTRE2");
-            didResponse(xmlhttp.responseText);
+            var dades =[];
+            didResponse(xmlhttp.responseText, dades);
+            omplirInformacio(dades);
+        }
+    }
+    xmlhttp.overrideMimeType("application/json");
+    xmlhttp.open("GET", "/data/"+fileName, true);
+    xmlhttp.send();
+
+};
+
+function didResponse(response, dades) {
+
+    jsonArray = JSON.parse(response);
+    for ( i = 0; i < jsonArray.videos.length; i++ ){
+        var aux = [];
+        aux.push( jsonArray.videos[i].albumName);
+        aux.push(jsonArray.videos[i].artistName);
+        aux.push(jsonArray.videos[i].votes);
+        aux.push(jsonArray.videos[i].description);
+        aux.push(jsonArray.videos[i].src);
+
+        dades.push(aux);
+    }
+
+}
+
+
+function llegir_usuaris(){
+    var fileName = "users.json";
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange= function() {
+
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var dades =[];
+            extraccioUsuaris(xmlhttp.responseText, dades);
         }
     }
     xmlhttp.overrideMimeType("application/json");
@@ -105,9 +144,10 @@ function llegir_json() {
     xmlhttp.send();
 };
 
-function didResponse(response) {
-    console.log("HELLO2");
+function extraccioUsuaris(response, dades){
     jsonArray = JSON.parse(response);
-    console.log(jsonArray);
-}
+    for ( i = 0; i < jsonArray.usuaris.length; i++ ){
+        dades.push( jsonArray.usuaris[i].userName);
+    }
+};
 

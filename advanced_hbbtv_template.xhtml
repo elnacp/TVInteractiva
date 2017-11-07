@@ -17,6 +17,12 @@
 //<![CDATA[
 window.onload = function(){
   hbbtvlib_red_initialize();
+  var pause = 0; // 0 no esta pausat 1 si
+  var videopausat; // es el video que esta pausat en aquell moment
+    //
+    //
+  var fullscreen = 0;
+
 
   var pg = 0;
   //SEGON PANELL
@@ -49,6 +55,38 @@ window.onload = function(){
 	e.preventDefault();
   },false);
 
+    if (e.keyCode==VK_RED && pg == 1) {
+        if(pause==0 || i!=videopausat){
+            video = document.getElementById("video");
+            video.type = "video/mp4";
+            video.style.width="360px";
+            video.style.height="230px";
+            //video.data=video_aux;
+        }
+        pause = true;
+        video.play(1);
+    };
+
+
+    if (e.keyCode==VK_GREEN && pg==1) {
+        videopausat=i;
+        video.play(0);
+        pause=1;
+    };
+
+    if (e.keyCode==VK_YELLOW && p1==1) {
+        video.stop();
+    };
+
+    if(e.keyCode==VK_BLUE && fullscreen==0){
+        video.style.width = "360px";
+        video.style.height = "220px";
+        document.getElementById("video").style.marginLeft="5px";
+        document.getElementById("video").style.marginTop="5px";
+        fullscreen=false;
+        anterior="grande";
+        document.getElementById('divGraphic2').style.visibility="hidden";
+    };
 
 };
 
@@ -111,22 +149,56 @@ So the every content should be draw in 1280 * 720 -->
 <!-- Panel for catalog -->
 <div id="catalog" style="background: rgba(0,0,0,1.0); width: 1024px; height: 648px; top: 0px; left:0px">
   <div id="blocLeft" style="background: rgba(255,255,255,1.0); width:600px; height; 500px; top:150px; left:150px; float:left; overflow-y: scroll;">
+
       <ul style="list-style-type: none;">
         <li>
             <div id="Video" style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto" src="./img/youtube-transparent.png"/></div>
             <div style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
               <div id="data" style="float: left;">
-                <p id="albumname">Album name</p>
-                <p id="artistname">Artist name</p>
+                  <p> Album name: </p> <p id="albumname"> </p>
+                  <p> Artist name: </p> <p id="artistname"> </p>
               </div>
               <div id="Views" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
             </div>
         </li>
+          <li>
+              <div id="Video1" style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto" src="./img/youtube-transparent.png"/></div>
+              <div style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
+                  <div id="data1" style="float: left;">
+                      <p id="albumname1">Album name</p>
+                      <p id="artistname1">Artist name</p>
+                  </div>
+                  <div id="Views1" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
+              </div>
+          </li>
+          <li>
+              <div id="Video2" style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto" src="./img/youtube-transparent.png"/></div>
+              <div style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
+                  <div id="data2" style="float: left;">
+                      <p id="albumname2">Album name</p>
+                      <p id="artistname2">Artist name</p>
+                  </div>
+                  <div id="Views2" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
+              </div>
+          </li>
+          <li>
+              <div id="Video3" style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto" src="./img/youtube-transparent.png"/></div>
+              <div style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
+                  <div id="data3" style="float: left;">
+                      <p id="albumname3">Album name</p>
+                      <p id="artistname3">Artist name</p>
+                  </div>
+                  <div id="Views3" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
+              </div>
+          </li>
+
       </ul>
   </div>
   <div id="blocRight" style="background: rgba(255,255,255,1.0); width:300px; height; 500px; top:150px; left:650px; float:left;">
     <div>
-      <img style="margin-left:1em; margin-top:0.5em; height=150px; width=265px;" src="./img/frozen-hd.jpg"/>
+    <div class="videoPanell">
+        <object id="video" style="position: absolute"></object>
+    </div>
       <div id="ConnectedUsers" style="margin:1em; border: 2px solid #ffcccc;">
           <h2 style="text-align:center;">Connected Users</h2>
           <ul style="list-style-type: none; margin:0.5em; border: 0.5px solid black;">
