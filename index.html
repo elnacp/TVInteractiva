@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//HbbTV//1.1.1//EN" "http://www.hbbtv.org/dtd/HbbTV-1.1.1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+
+<title>HbbTV Application Template </title>
+
+<meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml" charset="UTF-8" />
+<meta http-equiv="Pragma" content="no-cache" />
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+<script type="text/javascript" src="./js/keycodes.js"></script>
+<script type="text/javascript">
+
+//<![CDATA[
+
+window.onload = function(){
+    
+  var pg = 0;
+  var videopausat = 0; //quin es el video pausat
+  var fullscreen = 0; // si esta o no en fullscreen
+  var j = 0; //index del video
+  var dades; var usuaris; var tv;
+
+  //CRIDA A INICIALITZACIO DEL PROGRAMA
+  hbbtvlib_red_initialize();
+  llegir_json();
+  llegir_usuaris();
+  document.getElementById("Video1").style.backgroundColor = "cyan";
+
+  
+  //SEGON PANELL
+  document.addEventListener("keydown", function(e) {
+	if (e.keyCode == VK_RED) {   //VK_RED
+        if( pg == 0){
+            //Mostra numero de sincronitzacio
+            hbbtvlib_synchronization();
+            pg = 1;
+            
+        }
+	};
+	e.preventDefault();
+  },false);
+
+  //TERCER PANELL
+  document.addEventListener("keydown", function(e) {
+      if (e.keyCode == VK_ENTER && pg == 1) {   
+          if(pg == 1){
+              //Mostra panell del cataleg
+              hbbtvlib_catalog();
+              dades = JSON.parse(document.getElementById("videosList").textContent);
+              usuaris = JSON.parse(document.getElementById("usuaris").textContent);
+              //printa les dades tant dels videos, com dels usuaris i la descripcio dels videos
+              printCatalog(dades, j);
+              printUsers(usuaris);
+              printDescription(dades,j);
+              //executa la televisio en la pantalla lateral del cataleg
+              TVpetita(tv);
+              //Esperem a que es desclicki el enter per a no activar el primer video             
+              document.addEventListener("keyup", function(e){
+                  if(e.keyCode == VK_ENTER && pg == 1){
+                      pg = 2;
+                  };
+                  e.preventDefault();
+              },false);
+           }
+      };
+      e.preventDefault();
+  },false);
+  
+    //activa el scroll cap avall
+    document.addEventListener("keydown", function(e) {
+        if(e.keyCode == VK_DOWN && pg == 2 && dades.videos.length > (j + 2)){
+          
+            j++;
+          
+            document.getElementById("Video"+ (j)).style.backgroundColor = "white";
+            document.getElementById("Video"+ (j+1)).style.backgroundColor = "cyan";
+            document.getElementById("albumname").innerHTML = dades.videos[j].albumName;
+            document.getElementById("artistname").innerHTML = dades.videos[j].artistName;
+            document.getElementById("Views").innerHTML = dades.videos[j].votes;
+            document.getElementById("Description").innerHTML = dades.videos[j].description;
+        };
+	    e.preventDefault();
+    },false);
+
+    //torna a printar les dades shiftades
+    document.addEventListener("keydown", function(e) {
+        if(e.keyCode == VK_DOWN && pg == 2 && (j >= 4)){
+            for ( var i = 1; i < 6 ; i++){
+                document.getElementById("albumname"+i).innerHTML= dades.videos[i].albumName;
+                document.getElementById("artistname"+i).innerHTML = dades.videos[i].artistName;
+                document.getElementById("Views"+i).innerHTML = dades.videos[i].votes;
+                document.getElementById("img" +i).src = "./img/"+ (i+1) +".jpg";
+                document.getElementById("img" +i).style.height = "84px";
+                document.getElementById("img" +i).style.width= "84px"; 
+            
+                
+            }
+        };
+       
+	    e.preventDefault();
+    },false);
+
+  //activa el scroll cap amunt
+  document.addEventListener("keydown", function(e) {
+      if(e.keyCode == VK_UP && pg == 2 && j > 0  ){
+        
+        j--;
+        
+        document.getElementById("Video"+ (j+2)).style.backgroundColor = "white";
+        document.getElementById("Video"+ (j+1)).style.backgroundColor = "cyan";
+        document.getElementById("albumname").innerHTML = dades.videos[j].albumName;
+        document.getElementById("artistname").innerHTML = dades.videos[j].artistName;
+        document.getElementById("Views").innerHTML = dades.videos[j].votes;
+        document.getElementById("Description").innerHTML = dades.videos[j].description;
+    };
+	e.preventDefault();
+  },false);
+  
+  //torna a printar les dades shiftades
+  document.addEventListener("keydown", function(e) {
+        if(e.keyCode == VK_UP && pg == 2 && (j <= 0)){
+            for ( var i = 0; i < 5 ; i++){
+                document.getElementById("albumname"+(i+1)).innerHTML= dades.videos[i].albumName;
+                document.getElementById("artistname"+(i+1)).innerHTML = dades.videos[i].artistName;
+                document.getElementById("Views"+(i+1)).innerHTML = dades.videos[i].votes;
+                document.getElementById("img" +(i+1)).src = "./img/"+ (i+1) +".jpg";
+                document.getElementById("img" +(i+1)).style.height = "84px";
+                document.getElementById("img" +(i+1)).style.width= "84px"; 
+            
+                
+            }
+        };
+       
+	    e.preventDefault();
+    },false);
+  
+  
+    //Destrueix l'aplicacio en cas de voler sortir d'aquesta
+  document.addEventListener("keydown", function(e) {
+	if (e.keyCode== VK_0) {
+		var app = document.getElementById("oipfAppMan").getOwnerApplication(document);
+		app.hide();
+        app.destroyApplication();
+
+	};
+	e.preventDefault();
+  },false);
+  
+    
+   //activa i desactiva el fullscreen
+   document.addEventListener("keydown", function(e) {
+        if(e.keyCode == VK_BLUE && fullscreen == 0){
+            video = document.getElementById("tinyScreen");
+            if (video.requestFullscreen) {
+                      video.requestFullscreen();
+              } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+              } else if (video.mozRequestFullScreen) {
+                  video.mozRequestFullScreen();
+              } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+              }
+        
+              if (document.exitFullscreen) {
+                document.exitFullscreen();
+              } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+              } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+              } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+              }
+        };
+        	e.preventDefault();
+    },false);
+    
+    //visualitza el video que es vol veure a la pantalla lateral
+    document.addEventListener("keydown", function(e) {
+            if(e.keyCode == VK_ENTER && pg == 2 ){
+                document.getElementById("tinyScreen").innerHTML = "";
+                document.getElementById("tinyScreen").type = "video/mp4";
+                document.getElementById("tinyScreen").data = "./clips/" +(j+1)+".mp4";
+                document.getElementById("tinyScreen").play();
+                dades.videos[j].votes++;  
+            };
+    	    e.preventDefault();
+    },false);
+    
+    //fa play del video un cop pausat o acabat
+    document.addEventListener("keydown", function(e) {
+            if(e.keyCode==VK_RED && pg == 2 && videopausat == 1 ){
+                document.getElementById("tinyScreen").childNodes[0].play();
+            };
+    	    e.preventDefault();
+    },false);
+   
+    
+
+    //pausa el video que s'esta emitint
+    document.addEventListener("keydown", function(e) {
+        if (e.keyCode==VK_GREEN && pg==2) {
+            videopausat = 1;
+            document.getElementById("tinyScreen").childNodes[0].pause();
+            
+        };
+    	    e.preventDefault();
+    },false);
+
+    //para el video que s'esta emiting
+    document.addEventListener("keydown", function(e) {
+     if (e.keyCode==VK_YELLOW && pg==2) {
+        
+        document.getElementById("tinyScreen").stop();
+        
+     };
+         e.preventDefault();
+    },false);
+
+};
+
+
+</script>
+</head>
+
+<body>
+
+<!--
+The main page should have application manager, and should call show() at onload();
+-->
+<object id="oipfAppMan" type="application/oipfApplicationManager"></object>
+
+<div id="videosList" style="visibility:hidden"></div>
+<div id="usuaris" style="visibility:hidden"></div>
+
+<!-- the logical HbbTV Application graphic plane is 1280px horizontally by 720px vertically
+So the every content should be draw in 1280 * 720 -->
+<div style="left: 0px; top: 0px; width: 1280px; height: 720px;  position:absolute; border:1px solid #c33;  z-index:-1;"></div>
+
+<!-- Graphic safe area(Recommend), 1024 * 648 -->
+
+<!-- Panel for synchronization screen -->
+
+<div id="segonPanell" style="background: rgba(255,255,255,0.5); border: 2px white solid; border-radius:25px; left: 300px; top: 275px; width: 750px; height: 150px; position:absolute; text-align:center; z-index:1; " >
+  <p style="color: white; font-family: verdana; font-size: 60px; margin:0;"> Sync number </p>
+  <p style="color: white; font-family: verdana; font-size: 30px; margin:0;" id="numeroRandom">  </p>
+
+</div>
+
+<div id="okContainer" style="left: 300px; top:450px; border: 2px white solid; border-radius:25px; position:absolute; background: rgba(255,255,255,0.5); width:750px; height: 75px; text-align:center;">
+  <p style="color: white; font-family: verdana;">Press <img align="middle" height="40px" width="40px" src="./img/070645-glossy-black-3d-button-icon-alphanumeric-word-ok1-sc49.png"/> to continue </p>
+</div>
+<!-- End of panel for synchronization -->
+
+
+<!-- Panel for initial red button -->
+
+<div id="divGraphic" style="left: 128px; top: 36px; width: 1024px; height: 648px; position:absolute; z-index:1;">
+
+  <div id="buttonContainer" style="left:50px; top:550px; position:absolute; background: rgba(255,255,255,0.5); border: 2px white solid; border-radius:25px; width:350px; text-align:center; position:absolute; height: 75px;">
+    <p style="color: white; font-family: verdana; font-size:18px;">Press    <img align="top" height="35px" width="60px" src="./img/buttons_PNG63.png"/>    to start application </p>
+  </div>
+</div>
+<!-- End of panel for initial red button-->
+
+<!-- Panel for catalog -->
+<div id="catalog" style="background: rgba(0,0,0,1.0); width: 1280px; height: 720px; top:0px; left:0px;">
+  <div id="box" style="left: 136px; top: 36px; width: 1024px; height: 648px; position:absolute; z-index:1;">
+
+    <div id="blocLeft" style="background: rgba(255,255,255,1.0); width:600px; height; 700px; top:150px; left:150px; float:left;">
+
+      <ul style="list-style-type: none;">
+        <li>
+            <div style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto" id= "img1" src="./img/youtube-transparent.png"/></div>
+            <div id="Video1" style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
+              <div id="data" style="float: left;">
+                <p id="albumname1"></p>
+                <p id="artistname1"></p>
+              </div>
+              <div id="Views1" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
+            </div>
+        </li>
+          <li>
+              <div style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto"  id= "img2" src="./img/youtube-transparent.png"/></div>
+              <div id="Video2" style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
+                  <div id="data" style="float: left;">
+                      <p id="albumname2"></p>
+                      <p id="artistname2"></p>
+                  </div>
+                  <div id="Views2" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
+              </div>
+          </li>
+          <li>
+              <div style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto"  id= "img3" src="./img/youtube-transparent.png"/></div>
+              <div id="Video3" style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
+                  <div id="data" style="float: left;">
+                      <p id="albumname3"></p>
+                      <p id="artistname3"></p>
+                  </div>
+                  <div id="Views3" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
+              </div>
+          </li>
+          <li>
+              <div style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto" id= "img4" src="./img/youtube-transparent.png"/></div>
+              <div id="Video4" style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
+                  <div id="data" style="float: left;">
+                      <p id="albumname4"></p>
+                      <p id="artistname4"></p>
+                  </div>
+                  <div id="Views4" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
+              </div>
+          </li>
+         <li>
+          <div style="float:left; border:2px solid black; background: rgba(255,255,255,1.0)"><img align="top" height="84px" width="auto" id= "img5" src="./img/youtube-transparent.png"/></div>
+          <div id="Video5" style="padding-left: 2em; border: 2px solid black; float:left; width:75%; height:auto;">
+              <div id="data" style="float: left;">
+                  <p id="albumname5"></p>
+                  <p id="artistname5"></p>
+              </div>
+              <div id="Views5" style="text-align:right; float=auto; padding-right: 3em;"><p>25</p></div>
+          </div>
+          </li>
+      </ul>
+  </div>
+    <div id="blocRight" style="background: rgba(255,255,255,1.0); width:400px; height; 500px; top:100px; left:650px; float:left;">
+      <div>
+        <div style="margin-top:15px; margin-left:20px; padding-bottom:250px;"  class="live">
+            <object style="position:absolute;" id="tinyScreen"></object>
+        </div>
+        <div id="ConnectedUsers" style="margin:0.5em; border: 2px solid #ffcccc;">
+            <h4 style="text-align:center;">Connected Users</h4>
+            <ul style="list-style-type: none; margin:0.5em; border: 0.5px solid black;">
+              <li id="user1"></li>
+              <li id="user2"></li>
+              <li id="user3"></li>
+              <li id="user4"></li>
+            </ul>
+        </div>
+        <div id="AlbumInfo" style="margin:0.5em; border: 2px solid #ffcccc;">
+            <h4 style="text-align:center;">Album Info</h4>
+            <ul style="list-style-type: none; margin:0.5em; border: 0.5px solid black;">
+              <li id="albumname"></li>
+              <li id="artistname"></li>
+              <li id="Views"></li>
+              <li id="Description"></li>
+            </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Menu de botons del cataleg -->
+    <div id="buttonRow" style="background: rgba(75,75,75,1.0); width: 1000px; height:65px; top:400px; left:100px; text-align: center; float: left;">
+      <p style="color: white; font-family: verdana; font-size:18px;"><img align="top" height="35px" width="60px" src="./img/buttons_PNG63.png"/> Play Video
+        <img align="center" height="35px" width="60px" src="./img/green-rect-button-hi.png"/> Pause Video
+        <img align="center" height="35px" width="60px" src="./img/Fall_But_14_Vector_Clipart.png"/> Stop Video
+        <img align="center" height="35px" width="60px" src="./img/blank-blue-button-hi.png"/> Fullscreen
+        <img align="center" height="35px" width="60px" src="./img/blank-orange-button-hi.png"/> Exit  </p>
+    </div>
+  </div>
+</div>
+<!-- End of panel for catalog -->
+
+<!-- Panel for fullscreen button -->
+<div id="divGraphicFull" style="left: 128px; top: 36px; width: 1024px; height: 648px; position:absolute; z-index:1;">
+
+  <div id="buttonContainerBlue" style="left:50px; top:550px; position:absolute; background: rgba(255,255,255,0.5); border: 2px white solid; border-radius:25px; width:350px; text-align:center; position:absolute; height: 75px;">
+    <p style="color: white; font-family: verdana; font-size:18px;">Press    <img align="top" height="35px" width="60px" src="./img/blank-blue-button-hi.png"/>   to exit fullscreen </p>
+  </div>
+</div>
+<!-- End of panel for fullscreen -->
+
+<script type="text/javascript" src="./js/hbbtvlib.js"></script>
+</body>
+
+</html>

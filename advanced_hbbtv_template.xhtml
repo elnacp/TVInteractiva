@@ -78,15 +78,26 @@ window.onload = function(){
         video.stop();
     };
 
-    if(e.keyCode==VK_BLUE && fullscreen==0){
+    if(e.keyCode==VK_BLUE && fullscreen==1){
         video.style.width = "360px";
         video.style.height = "220px";
         document.getElementById("video").style.marginLeft="5px";
         document.getElementById("video").style.marginTop="5px";
-        fullscreen=false;
-        anterior="grande";
-        document.getElementById('divGraphic2').style.visibility="hidden";
+        fullscreen = 0;
+        document.getElementById('catalog').style.visibility="hidden";
     };
+
+    if (e.keyCode==VK_BLUE && pg == 1 && fullscreen==0) {
+
+        video.style.width = "1300px";
+        video.style.height = "900px";
+        document.getElementById("video").style.marginLeft="-830px";
+        document.getElementById("video").style.marginTop="-120px";
+        fullscreen=1;
+        document.getElementById('catalog').style.visibility="visible";
+    };
+
+
 
 };
 

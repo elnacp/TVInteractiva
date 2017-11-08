@@ -11,21 +11,17 @@ function hbbtvlib_red_initialize(){
   appManager.show();
 
   redButton();
-
-
-
-  // IMPORTANT!!: only RED button should be accepted.
-  appManager.privateData.keyset.setValue(0x1);
+  
 
 };
 
+//executa els temps que el boto inicial a d'apareixer i desapareixer
 function redButton(){
-  //buttonContainer
-
+  
   $('#segonPanell').hide();
   $('#okContainer').hide();
   $('#catalog').hide();
-
+  $('#buttonContainerBlue').hide();
   setTimeout(function(){
     $('#buttonContainer').show().delay(10000).fadeOut( function(){
           $('#buttonContainer').hide().delay(5000).fadeIn( function(){
@@ -41,6 +37,7 @@ function redButton(){
   });
 };
 
+//genera el numero de sincronitzacio de forma aleatoria
 function generarNumero(){
     var numero;
     var numero="";
@@ -64,10 +61,11 @@ function generarNumero(){
     return numero;
 };
 
-
+//mostra el menu de sincronitzacio
 function hbbtvlib_synchronization(){
 
     $('#catalog').hide();
+    $('#buttonContainerBlue').hide();
     var button = document.getElementById('divGraphic');
     button.style.display = "none";
     $('#segonPanell').show();
@@ -78,32 +76,44 @@ function hbbtvlib_synchronization(){
 
 };
 
-
+//mostra el menu del cataleg
 function hbbtvlib_catalog(){
 
     $('#segonPanell').hide();
     $('#okContainer').hide();
     $('#buttonContainer').hide();
+    $('#buttonContainerBlue').hide();
     $('#catalog').show();
-
-    llegir_json();
-    llegir_usuaris();
-
+    document.getElementById('img1').src = "./img/1.jpg";
+    document.getElementById('img1').style.height = "84px";
+    document.getElementById('img1').style.width= "84px";
+    document.getElementById('img2').src = "./img/2.jpg";
+    document.getElementById('img2').style.height = "84px";
+    document.getElementById('img2').style.width= "84px";
+    document.getElementById('img3').src = "./img/3.jpg";
+    document.getElementById('img3').style.height = "84px";
+    document.getElementById('img3').style.width= "84px";
+    document.getElementById('img4').src = "./img/4.jpg";
+    document.getElementById('img4').style.height = "84px";
+    document.getElementById('img4').style.width= "84px";
+    document.getElementById('img5').src = "./img/5.jpg";
+    document.getElementById('img5').style.height = "84px";
+    document.getElementById('img5').style.width= "84px";
 
 };
 
-
+//llegeix el fitxer json dels videos del cataleg
 function llegir_json() {
-
 
     var fileName = "dades.json";
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange= function() {
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            var dades =[];
-            didResponse(xmlhttp.responseText, dades);
-            omplirInformacio(dades);
+            
+             document.getElementById("videosList").innerHTML = xmlhttp.responseText;
+            
+      
         }
     }
     xmlhttp.overrideMimeType("application/json");
@@ -112,31 +122,16 @@ function llegir_json() {
 
 };
 
-function didResponse(response, dades) {
-
-    jsonArray = JSON.parse(response);
-    for ( i = 0; i < jsonArray.videos.length; i++ ){
-        var aux = [];
-        aux.push( jsonArray.videos[i].albumName);
-        aux.push(jsonArray.videos[i].artistName);
-        aux.push(jsonArray.videos[i].votes);
-        aux.push(jsonArray.videos[i].description);
-        aux.push(jsonArray.videos[i].src);
-
-        dades.push(aux);
-    }
-
-}
-
-
+//llegeix el fitxer json que conte els usuaris
 function llegir_usuaris(){
     var fileName = "users.json";
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange= function() {
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            var dades =[];
-            extraccioUsuaris(xmlhttp.responseText, dades);
+           
+           document.getElementById("usuaris").innerHTML = xmlhttp.responseText;
+          
         }
     }
     xmlhttp.overrideMimeType("application/json");
@@ -144,10 +139,58 @@ function llegir_usuaris(){
     xmlhttp.send();
 };
 
-function extraccioUsuaris(response, dades){
-    jsonArray = JSON.parse(response);
-    for ( i = 0; i < jsonArray.usuaris.length; i++ ){
-        dades.push( jsonArray.usuaris[i].userName);
-    }
-};
+//printa les dades inicials del cataleg
+function printCatalog(dades, j){
 
+    index = 1;
+    
+    
+    for(i = j; i < j + 5; i++){
+       
+      document.getElementById("albumname" + index).innerHTML = dades.videos[i].albumName;
+      document.getElementById("artistname" + index).innerHTML = dades.videos[i].artistName;
+      document.getElementById("Views" + index).innerHTML = dades.videos[i].votes;
+      index++;
+
+    }
+
+}
+
+//printa els usuaris del cataleg
+function printUsers(usuaris){
+    
+    for(i = 1; i < usuaris.users.length; i++){
+        
+        document.getElementById("user"+ i).innerHTML = usuaris.users[i].userName;
+    }
+}
+
+//printa la descripcio de cada video
+function printDescription(dades,j){
+    
+    document.getElementById("albumname").innerHTML = dades.videos[j].albumName;
+    document.getElementById("artistname").innerHTML = dades.videos[j].artistName;
+    document.getElementById("Views").innerHTML = dades.videos[j].votes;
+    document.getElementById("Description").innerHTML = dades.videos[j].description;
+    
+}
+
+//crea el canal per emetre video a la pantalla lateral petita
+function TVpetita(video){
+    video = document.getElementById("tinyScreen");
+    video.type = "video/broadcast";
+    video.style.width = "350px";
+    video.style.height = "250px";
+    video.bindToCurrentChannel();
+}
+
+//activa el fullscreen dels videos del cataleg
+function fullScreen(fullscreen){
+    console.log("dintre");
+    document.getElementById("tinyScreen").style.width="1280px";
+    document.getElementById("tinyScreen").style.height="720px";
+    fullscreen = 1;
+    $('#catalog').hide();
+    $('buttonContainerBlue').show();
+    $('#buttonContainerBlue').show().delay(5000).fadeOut( function(){});
+}
