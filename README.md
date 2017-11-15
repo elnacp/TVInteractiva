@@ -3,7 +3,7 @@
 <h4>Miembros del proyecto</h4>
 <ul>
   <li><b>Elna Cabot</b>: Encargada del backend</li>
-  <li><b>Andrea Garcia</b>: Encargada del frontend</li>
+  <li><b>Andrea Garcia</b>: Encargada del frontend y ayudante en backend</li>
   
 </ul>
 
