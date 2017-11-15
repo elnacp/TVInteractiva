@@ -8,7 +8,7 @@
 </ul>
 
 <h4>Objetivos</h4>
-Este proyecto se va a llevar a cabo en su mayoría mediante <i><b>Javascripy</b></i> , <i><b>HTML</b></i> y <i><b>CSS</b></i>. 
+Este proyecto se va a llevar a cabo en su mayoría mediante <i><b>JavascripT</b></i> , <i><b>HTML</b></i> y <i><b>CSS</b></i>. 
 
 https://tvelnaandrea.000webhostapp.com/
 
